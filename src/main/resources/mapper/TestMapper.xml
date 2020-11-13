@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.mapper.TestMapper">
+
+    <select id="findByName" resultType="TestBean">
+      select * from tb_test where testname = #{testname}
+    </select>
+    <insert id="save" useGeneratedKeys="true" keyProperty="testid" keyColumn="testid">
+        insert into tb_test
+        (testname,totalscore,passscore,testtime,starttime,endtime,updatetime,testauthor,authorid)
+        values (#{testname},#{totalscore},#{passscore},#{testtime},#{starttime},#{endtime},#{updatetime},#{testauthor},#{authorid})
+    </insert>
+</mapper>

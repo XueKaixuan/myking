@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.mapper.UserMapper">
+    <resultMap id="stumap" type="Student">
+        <id property="sid" column="sid"></id>
+        <result property="sname" column="sname"></result>
+        <result property="age" column="age"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="address" column="address"></result>
+        <association property="gb" javaType="GradeBean">
+            <id property="gid" column="gid"></id>
+            <result property="gname" column="gname"></result>
+        </association>
+    </resultMap>
+    <select id="getUserList" resultType="UserBean">
+        select * from tb_user
+    </select>
+    <select id="findAll" resultMap="stumap">
+        select s.*,g.gid,g.gname from tb_student s
+        left join tb_student_grade sg on sg.sid = s.sid
+        LEFT JOIN tb_grade g on sg.gid = g.gid
+    </select>
+    <select id="getGradeList" resultType="GradeBean">
+        select * from tb_grade
+    </select>
+    <select id="getCityListById" resultType="CityBean">
+        select * from tb_city where pid=#{id}
+    </select>
+    <insert id="saveStuInfo" parameterType="Student" useGeneratedKeys="true" keyProperty="sid" keyColumn="sid">
+        insert into tb_student(sname,age,birthday,address)
+        values (#{sname},#{age},#{birthday},#{address})
+    </insert>
+    <insert id="saveStudentGrade">
+        insert into tb_student_grade(sid,gid)
+        values(#{sid},#{gid})
+    </insert>
+    <select id="findOne" resultMap="stumap">
+        select s.*,g.gid,g.gname from tb_student s
+        left join tb_student_grade sg on sg.sid = s.sid
+        LEFT JOIN tb_grade g on sg.gid = g.gid
+        where s.sid = #{sid}
+    </select>
+    <delete id="deleteStudentBySid">
+        delete from tb_student where sid=#{sid}
+    </delete>
+    <delete id="deleteStudentGrade">
+        delete from tb_student_grade where sid=#{sid}
+    </delete>
+</mapper>
